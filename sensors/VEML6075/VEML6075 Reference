@@ -1,0 +1,16 @@
+//lets get this bread
+//most of this code is taken from sparkfun.com :)
+
+VEML6075 uv; //creates object
+
+void setup() {
+  Serial.begin(9600)
+  
+  if (uv.begin() == false) {
+    Serial.println("Homeslice, I can't find your UV thingo");
+    while (1) ;
+    }
+  Serial.println("UVA, UVB, UV Index");
+}
+
+void loop() {
