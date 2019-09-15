@@ -1,0 +1,33 @@
+//first tiem coding something ever epic style
+
+//add libraries to thing
+
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+//i think thats all of them
+
+//tell computer what the pressure at sea level is so we can determine altitude later
+#define SEALEVELPRESSURE_HPA (1050)
+#define delayTime (1000)
+
+void setup()
+  Serial.begin(9600) //this sets the bits per second data transfer rate thingy so we can talk to the sensor
+  
+  if (!bme.begin(0x76)) {
+    Serial.println("Hey dude you need to plug the sensor in because I can't find it :)");
+    while (1);
+    }
+  }
+  //that is an error message
+  
+  void loop() {
+    Serial.print(bme.readTemperature());
+    Serial.print(bme.readHumidity());
+    Serial.print(bme.readPressure());
+    Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+    
+    delay(delayTime);
+}
+
+//I hope this works
