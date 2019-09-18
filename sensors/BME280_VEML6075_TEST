@@ -1,0 +1,84 @@
+//first tiem coding something ever epic style
+
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+#include <Adafruit_VEML6075.h>
+Adafruit_BME280 bme;
+Adafruit_VEML6075 uv = Adafruit_VEML6075();
+//this adds the libraries to the code thing
+//i think thats all of them
+
+#define SEALEVELPRESSURE_HPA (1021)
+//tell computer what the local pressure at sea level is so we can determine altitude later
+#define delayTime (1000)
+
+void setup() {
+  Serial.begin(9600); //this sets the bits per second data transfer rate thingy so we can talk to the sensor
+  delay(100);
+  bme.begin(0x76); //this starts the sensor
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  Serial.println();
+  Serial.println("Looking for sensors...");
+  
+  delay(1000);
+
+  Serial.println();
+  
+  if (!bme.begin() == false) {
+    Serial.println("Can't find BME280!");
+    delay(1000);
+    Serial.println();
+    Serial.println("Restarting!");
+    while (1);
+   }
+   else Serial.println("BME280 connected!");
+    
+    
+  delay(1000);
+
+  Serial.println();
+  
+  if (uv.begin() == false) {
+    Serial.println("Can't find VEML6075!");
+    delay(1000);
+    Serial.println();
+    Serial.println("Restarting!");
+    while (1) ;
+  }
+  else Serial.println("VEML6075 connected!");
+    
+//those are status messages
+  }
+  
+  void loop() {
+      Serial.println();
+      
+      Serial.print("Temp -      ");
+      Serial.print(bme.readTemperature());
+      Serial.println(" C");
+
+      Serial.print("Humidity -  ");
+      Serial.print(bme.readHumidity());
+      Serial.println(" %");
+
+      Serial.print("Pressure -  ");
+      Serial.print(bme.readPressure() / 100.0F);
+      Serial.println(" hPa");
+
+      Serial.print("Altitude -  ");
+      Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+      Serial.println(" m");
+
+      Serial.print("UV Index -  ");
+      Serial.println(uv.readUVI());
+      
+      digitalWrite(LED_BUILTIN, LOW);   // Turn the LED on by making the voltage LOW
+      delay(50);                      
+      digitalWrite(LED_BUILTIN, HIGH);  // Turn the LED off by making the voltage HIGH
+
+    delay(delayTime);
+}
+
+//I hope this works
